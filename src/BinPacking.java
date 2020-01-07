@@ -263,4 +263,77 @@ public class BinPacking {
 
         return C;
     }
+
+    public int DsaturWithFFDpacking(ArrayList<Objet> objets,ArbreConflit arbre){
+
+        ArrayList<Boite> boites =new ArrayList<>();
+        boites.add(new Boite(taille));
+
+        boolean trouve;
+
+        for(Objet o : objets){
+            trouve=false;
+            for(Boite b : boites){
+
+                if(b.getTailleDispo() >= o.getHauteur()){
+                    if(!conflit(o.getIndex(),b,arbre) && !trouve){
+                        b.ajouterObjet(o);
+                        trouve=true;
+                    }
+
+                }
+            }
+
+            if(!trouve){
+                Boite b = new Boite(taille);
+                b.ajouterObjet(o);
+                boites.add(b);
+            }
+        }
+
+        return boites.size();
+    }
+
+    public int DsaturWithBFDpacking(ArrayList<Objet> objets,ArbreConflit arbre){
+        ArrayList<Boite> boites =new ArrayList<>();
+        boites.add(new Boite(taille));
+
+        boolean trouve;
+        Boite meilleurBoite=null;
+        int maxDispo=0;
+
+        for(Objet o : objets){
+
+            trouve=false;
+            maxDispo=0;
+            meilleurBoite=null;
+
+            for(Boite b : boites){
+
+                if(b.getTailleDispo() >= o.getHauteur()){
+                    if(!conflit(o.getIndex(),b,arbre) && !trouve){
+                       if(maxDispo <= b.getTailleDispo() - o.getHauteur()){
+                           maxDispo= b.getTailleDispo() - o.getHauteur();
+                           meilleurBoite=b;
+                           trouve=true;
+                       }
+                    }
+
+                }
+            }
+
+            if(!trouve && meilleurBoite == null){
+                Boite b = new Boite(taille);
+                b.ajouterObjet(o);
+                boites.add(b);
+            }
+            else{
+                meilleurBoite.ajouterObjet(o);
+            }
+
+
+        }
+
+        return boites.size();
+    }
 }

@@ -48,12 +48,15 @@ public class Main {
             ArrayList<Objet> objets=genereationObjets(nb);
 
             System.out.println("Résultat pour FractionalPacking : "+binPacking.FractionalPacking(objets));
+            System.out.println();
             System.out.println("Résultat pour FirstFitDecreasingPacking : "+binPacking.FirstFitDecreasing(objets,arbre));
             System.out.println("Résultat pour BestFitDecreasingPacking : "+binPacking.BestFitDecreasingPacking(objets,arbre));
-            System.out.println(
-            );
+            System.out.println();
 
-            binPacking.Dsatur(arbre,objets);
+            ArrayList<Objet> dsat=binPacking.Dsatur(arbre,objets);
+            System.out.println("Résultat pour DsaturWithFFDpacking : "+binPacking.DsaturWithFFDpacking(dsat,arbre));
+            System.out.println("Résultat pour DsaturWithBFDpacking : "+binPacking.DsaturWithBFDpacking(dsat,arbre));
+
 
 
 
