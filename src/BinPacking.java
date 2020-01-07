@@ -271,7 +271,12 @@ public class BinPacking {
 
         boolean trouve;
 
-        for(Objet o : objets){
+        for(int i =0;i<objets.size();i++) {
+
+            Objet o = objets.get(i);
+
+            // Si l'objet peut rentrer dans une boite
+            if (o.getHauteur() <= taille) {
             trouve=false;
             for(Boite b : boites){
 
@@ -289,6 +294,8 @@ public class BinPacking {
                 b.ajouterObjet(o);
                 boites.add(b);
             }
+
+            }
         }
 
         return boites.size();
@@ -302,36 +309,39 @@ public class BinPacking {
         Boite meilleurBoite=null;
         int maxDispo=0;
 
-        for(Objet o : objets){
+        for(int i =0;i<objets.size();i++) {
 
-            trouve=false;
-            maxDispo=0;
-            meilleurBoite=null;
+            Objet o = objets.get(i);
 
-            for(Boite b : boites){
+            // Si l'objet peut rentrer dans une boite
+            if (o.getHauteur() <= taille) {
 
-                if(b.getTailleDispo() >= o.getHauteur()){
-                    if(!conflit(o.getIndex(),b,arbre) && !trouve){
-                       if(maxDispo <= b.getTailleDispo() - o.getHauteur()){
-                           maxDispo= b.getTailleDispo() - o.getHauteur();
-                           meilleurBoite=b;
-                           trouve=true;
-                       }
+                trouve = false;
+                maxDispo = -1;
+                meilleurBoite = null;
+
+                for (Boite b : boites) {
+
+                    if (b.getTailleDispo() >= o.getHauteur() && !conflit(o.getIndex(), b, arbre)) {
+                        if (b.getTailleDispo() - o.getHauteur() > maxDispo) {
+                                maxDispo = b.getTailleDispo() - o.getHauteur();
+                                meilleurBoite = b;
+                                trouve = true;
+                        }
+
                     }
-
                 }
-            }
 
-            if(!trouve && meilleurBoite == null){
-                Boite b = new Boite(taille);
-                b.ajouterObjet(o);
-                boites.add(b);
-            }
-            else{
-                meilleurBoite.ajouterObjet(o);
-            }
+                if (maxDispo == -1) {
+                    Boite b = new Boite(taille);
+                    b.ajouterObjet(o);
+                    boites.add(b);
+                } else {
+                    meilleurBoite.ajouterObjet(o);
+                }
 
 
+            }
         }
 
         return boites.size();

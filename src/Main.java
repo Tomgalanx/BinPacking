@@ -1,5 +1,9 @@
+import org.knowm.xchart.*;
+import org.knowm.xchart.style.Styler;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,13 +20,15 @@ public class Main {
             switch (nb){
 
                 case 125:
-                    arbre =FabriqueArbreConflit.fabrique125();
                     System.out.println("Génération de 125 objets et de l'arbre correspondant");
+                    arbre =FabriqueArbreConflit.fabrique125();
+
                     break;
 
                 case 250:
-                    arbre =FabriqueArbreConflit.fabrique250();
                     System.out.println("Génération de 250 objets et de l'arbre correspondant");
+                    arbre =FabriqueArbreConflit.fabrique250();
+
                     break;
 
                 case 500:
@@ -31,33 +37,52 @@ public class Main {
                     break;
 
                 case 1000:
-                    arbre =FabriqueArbreConflit.fabrique1000();
                     System.out.println("Génération de 1000 objets et de l'arbre correspondant");
+                    arbre =FabriqueArbreConflit.fabrique1000();
+
                     break;
 
                 default:
-                    arbre =FabriqueArbreConflit.fabrique125();
                     System.out.println("Génération de 125 objets et de l'arbre correspondant");
+                    arbre =FabriqueArbreConflit.fabrique125();
+
                     nb=125;
                     break;
             }
 
             //System.out.println(arbre);
+            System.out.println();
 
             BinPacking binPacking = new BinPacking(150);
             ArrayList<Objet> objets=genereationObjets(nb);
 
-            System.out.println("Résultat pour FractionalPacking : "+binPacking.FractionalPacking(objets));
+            int fract=binPacking.FractionalPacking(objets);
+            System.out.println("Résultat pour FractionalPacking : "+fract);
             System.out.println();
-            System.out.println("Résultat pour FirstFitDecreasingPacking : "+binPacking.FirstFitDecreasing(objets,arbre));
-            System.out.println("Résultat pour BestFitDecreasingPacking : "+binPacking.BestFitDecreasingPacking(objets,arbre));
+            int first =binPacking.FirstFitDecreasing(objets,arbre);
+            int best=binPacking.BestFitDecreasingPacking(objets,arbre);
+            System.out.println("Résultat pour FirstFitDecreasingPacking : "+first);
+            System.out.println("Résultat pour BestFitDecreasingPacking : "+best);
             System.out.println();
 
             ArrayList<Objet> dsat=binPacking.Dsatur(arbre,objets);
-            System.out.println("Résultat pour DsaturWithFFDpacking : "+binPacking.DsaturWithFFDpacking(dsat,arbre));
-            System.out.println("Résultat pour DsaturWithBFDpacking : "+binPacking.DsaturWithBFDpacking(dsat,arbre));
+            int ffd=binPacking.DsaturWithFFDpacking(dsat,arbre);
+            int bfd=binPacking.DsaturWithBFDpacking(dsat,arbre);
+            System.out.println("Résultat pour DsaturWithFFDpacking : "+ffd);
+            System.out.println("Résultat pour DsaturWithBFDpacking : "+bfd);
+
+            // Create Chart
+            CategoryChart chart = new CategoryChartBuilder().width(800).height(600).title("Graphique").xAxisTitle("Nom des algorithmes").yAxisTitle("Résultat").build();
+
+            // Customize Chart
+            chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNW);
+            chart.getStyler().setHasAnnotations(true);
+
+            // Series
+            chart.addSeries("Résultat", Arrays.asList(new String[] { "Fact", "FirstFit", "BestFit","FFDpacking", "BFDpacking" }), Arrays.asList(new Integer[] { fract, first, best, ffd, bfd }));
 
 
+            new SwingWrapper<CategoryChart>(chart).displayChart();
 
 
         }
