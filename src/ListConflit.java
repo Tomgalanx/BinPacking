@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+// Comparable pour trier par degres
 public class ListConflit implements Comparable<ListConflit> {
 
     private ArrayList<Integer> conflits;
@@ -17,6 +18,7 @@ public class ListConflit implements Comparable<ListConflit> {
         conflits.add(value);
     }
 
+    // retourne le degres le plus grand
     @Override
     public int compareTo(ListConflit listConflit) {
         return  listConflit.conflits.size()-this.conflits.size();

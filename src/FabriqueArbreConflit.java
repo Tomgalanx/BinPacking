@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.Scanner;
 
+
+// Classe qui lit les fichiers et génére les arbres
 public class FabriqueArbreConflit {
 
 

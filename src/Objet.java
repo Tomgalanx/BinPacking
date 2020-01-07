@@ -1,5 +1,6 @@
 
 
+// Comparable pour pouvoir trier les objets par hauteur
 public class Objet implements Comparable<Objet> {
 
 
@@ -26,6 +27,7 @@ public class Objet implements Comparable<Objet> {
     }
 
 
+    // Utilise pour trier une liste par hauteur des objets
     @Override
     public int compareTo(Objet objet) {
         return this.getHauteur()-objet.getHauteur();
